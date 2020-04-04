@@ -73,11 +73,20 @@ confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", s
 recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
 deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
 #confirmed[, (confirmed[, 0:ncol(confirmed)] > 0)]
+lst <- list()
 
+for (i in 1:nrow(confirmed))
+{
+  key <- paste0(as.character(confirmed[ 71, 1]),as.character(confirmed[ 71, 2]))
+  key
+}
+#lst[[key]] <- 2
+lst[[key]]
+#confirmed
 #confirmed[, 5:(ncol(confirmed) -1)]
 #sums <- rowSums(confirmed_cases[, 5:(ncol(confirmed_cases)-1)])
-if (confirmed[, 5] > 0) print("hi")
-sums
+#if (confirmed[, 5] > 0) print("hi")
+#sums
 #for ( i in 1:length(sums))
 #{
 #   if (sums[i] == 0)
