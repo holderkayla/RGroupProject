@@ -38,7 +38,7 @@ packages <- c("knitr", "kableExtra", "magrittr", "readr", "geosphere")
 install_me <- packages[!(packages %in% installed.packages()[, "Package"])]
 if (length(install_me)) install.packages(install_me)
 library(knitr)
-library(kableExtra)
+# library(kableExtra)
 library(magrittr)
 library(readr)
 library(geosphere)
@@ -67,6 +67,16 @@ Date fields are stored in MM/DD/YYYY format.
 
 ### Objective 2
 ```{r ob2}
+confirmed <- read.csv(file="./time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
+sums <- rowSums(confirmed[, 5:(ncol(confirmed)-1)])
+
+for ( i in 1:length(sums))
+{
+  if (sums[i] == 0)
+    {
+        print(i)
+    }
+}
 ```
 
 ### Objective 3
