@@ -38,7 +38,7 @@ packages <- c("knitr", "kableExtra", "magrittr", "readr", "geosphere")
 install_me <- packages[!(packages %in% installed.packages()[, "Package"])]
 if (length(install_me)) install.packages(install_me)
 library(knitr)
-library(kableExtra)
+#library(kableExtra)
 library(magrittr)
 library(readr)
 library(geosphere)
@@ -63,6 +63,32 @@ Date fields are stored in MM/DD/YYYY format.
 
 ### Objective 1
 ```{r ob1}
+# Algorithm 
+# Step1. Read in csv files.
+# Step2. find which column is the first day.
+# Step3. Make a list of the first days places as keys and with a count as the value
+# Step4. go through the list and look for the max count, the corresponding location is the origin.
+# Step5. Print the location.
+confirmed <- read.csv(file="./time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
+recovered <- read.csv(file="./time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
+deaths <- read.csv(file="./time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
+#confirmed[, (confirmed[, 0:ncol(confirmed)] > 0)]
+
+#confirmed[, 5:(ncol(confirmed) -1)]
+#sums <- rowSums(confirmed_cases[, 5:(ncol(confirmed_cases)-1)])
+if (confirmed[, 5] > 0) print("hi")
+sums
+#for ( i in 1:length(sums))
+#{
+#   if (sums[i] == 0)
+#    {
+        #i is the row num   
+#    }
+#}
+#rowsum(confirmed[0:(nrow(confirmed)), 5 :(ncol(confirmed) -1)])
+
+
+# quote = "", row.names = NULL,  stringsAsFactors = FALSE
 ```
 
 ### Objective 2
