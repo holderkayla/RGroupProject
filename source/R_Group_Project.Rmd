@@ -69,9 +69,9 @@ Date fields are stored in MM/DD/YYYY format.
 # Step3. Make a list of the first days places as keys and with a count as the value
 # Step4. go through the list and look for the max count, the corresponding location is the origin.
 # Step5. Print the location.
-confirmed <- read.csv(file="./time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
-recovered <- read.csv(file="./time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
-deaths <- read.csv(file="./time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
+confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
+recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
+deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
 #confirmed[, (confirmed[, 0:ncol(confirmed)] > 0)]
 
 #confirmed[, 5:(ncol(confirmed) -1)]
@@ -93,7 +93,7 @@ sums
 
 ### Objective 2
 ```{r ob2}
-confirmed <- read.csv(file="./time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
+confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
 sums <- rowSums(confirmed[, 5:(ncol(confirmed)-1)])
 
 for ( i in 1:length(sums))
@@ -107,7 +107,7 @@ for ( i in 1:length(sums))
 
 ### Objective 3
 ```{r ob3}
-Confirmed <- read.csv(file = "./time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
+Confirmed <- read.csv(file = "../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
 
 total_row <- rowSums(Confirmed[, 5:ncol(Confirmed)])
 
