@@ -69,15 +69,24 @@ Date fields are stored in MM/DD/YYYY format.
 # Step3. Make a list of the first days places as keys and with a count as the value
 # Step4. go through the list and look for the max count, the corresponding location is the origin.
 # Step5. Print the location.
-confirmed <- read.csv(file="./time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
-recovered <- read.csv(file="./time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
-deaths <- read.csv(file="./time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
+confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
+recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
+deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
 #confirmed[, (confirmed[, 0:ncol(confirmed)] > 0)]
+lst <- list()
 
+for (i in 1:nrow(confirmed))
+{
+  key <- paste0(as.character(confirmed[ 71, 1]),as.character(confirmed[ 71, 2]))
+  key
+}
+#lst[[key]] <- 2
+lst[[key]]
+#confirmed
 #confirmed[, 5:(ncol(confirmed) -1)]
 #sums <- rowSums(confirmed_cases[, 5:(ncol(confirmed_cases)-1)])
-if (confirmed[, 5] > 0) print("hi")
-sums
+#if (confirmed[, 5] > 0) print("hi")
+#sums
 #for ( i in 1:length(sums))
 #{
 #   if (sums[i] == 0)
@@ -93,7 +102,7 @@ sums
 
 ### Objective 2
 ```{r ob2}
-confirmed <- read.csv(file="./time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
+confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
 sums <- rowSums(confirmed[, 5:(ncol(confirmed)-1)])
 
 for ( i in 1:length(sums))
@@ -107,7 +116,7 @@ for ( i in 1:length(sums))
 
 ### Objective 3
 ```{r ob3}
-Confirmed <- read.csv(file = "./time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
+Confirmed <- read.csv(file = "../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
 
 for(x in 1:nrow(Confirmed)){ #iterates through rows
   i <- ncol(Confirmed) #Starts at the last column
