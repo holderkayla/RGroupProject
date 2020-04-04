@@ -118,18 +118,24 @@ for ( i in 1:length(sums))
 ```{r ob3}
 Confirmed <- read.csv(file = "../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
 
+recent_places <- data.frame(lat = nrow(Confirmed), long = ncol(Confirmed)) #creates dataframe to contain lat and long
+
+y <- 1
+
 for(x in 1:nrow(Confirmed)){ #iterates through rows
   i <- ncol(Confirmed) #Starts at the last column
   Cases <- Confirmed[x,i] #Finds values for the number of cases
   Cases_yesterday <- Confirmed[x,(i-1)] #Finds values for the number of cases the day before
   if ((Cases > 0) & (Cases_yesterday == 0)){ #The first date of instance
     print(x)
-    places <- Confirmed[x,3:4]
-    print(places)
+    recent_places[y,1:2] <- Confirmed[x,3:4]
+    y <- y + 1
   } else {
   i <- i - 1 #Moves back one column to find previous day
   }
 }
+recent_places <- recent_places[1:(y-1),1:(y-1)] #Truncate dataframe to correct size
+print(recent_places)
 
 ```
 
