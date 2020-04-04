@@ -118,7 +118,6 @@ Objective 1, Answer: Now we believe this to be the origin because it has the max
 
 ### Objective 2
 ```{r ob2}
-confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
 sums <- rowSums(confirmed[, 5:(ncol(confirmed)-1)])
 
 for ( i in 1:length(sums))
@@ -132,19 +131,18 @@ for ( i in 1:length(sums))
 
 ### Objective 3
 ```{r ob3}
-Confirmed <- read.csv(file = "../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
 
-recent_places <- data.frame(lat = nrow(Confirmed), long = ncol(Confirmed)) #creates dataframe to contain lat and long
+recent_places <- data.frame(lat = nrow(confirmed), long = ncol(confirmed)) #creates dataframe to contain lat and long
 
 y <- 1
 
-for(x in 1:nrow(Confirmed)){ #iterates through rows
-  i <- ncol(Confirmed) #Starts at the last column
-  Cases <- Confirmed[x,i] #Finds values for the number of cases
-  Cases_yesterday <- Confirmed[x,(i-1)] #Finds values for the number of cases the day before
-  if ((Cases > 0) & (Cases_yesterday == 0)){ #The first date of instance
+for(x in 1:nrow(confirmed)){ #iterates through rows
+  i <- ncol(confirmed) #Starts at the last column
+  cases <- confirmed[x,i] #Finds values for the number of cases
+  cases_yesterday <- confirmed[x,(i-1)] #Finds values for the number of cases the day before
+  if ((cases > 0) & (cases_yesterday == 0)){ #The first date of instance
     print(x)
-    recent_places[y,1:2] <- Confirmed[x,3:4]
+    recent_places[y,1:2] <- confirmed[x,3:4]
     y <- y + 1
   } else {
   i <- i - 1 #Moves back one column to find previous day
@@ -159,10 +157,7 @@ print(recent_places)
 
 #### Objective 4.1
 ```{r ob4.1}
-  # read in data
-  confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
-  recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
-  deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
+
   
 ```
 
