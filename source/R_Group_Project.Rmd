@@ -120,14 +120,18 @@ Objective 1, Answer: Now we believe this to be the origin because it has the max
 ### Objective 2
 ```{r ob2}
 sums <- rowSums(confirmed[, 5:(ncol(confirmed)-1)])
+current_day <- confirmed[, ncol(confirmed)]
+new_cases <- vector()
 
 for ( i in 1:length(sums))
 {
-  if (sums[i] == 0)
+  if (sums[i] == 0 && current_day[i] > 0)
     {
-        print(i)
+        new_cases <- c(new_cases, confirmed[i, 2])
     }
 }
+
+print(new_cases)
 ```
 
 ### Objective 3
