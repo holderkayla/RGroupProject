@@ -109,23 +109,19 @@ for ( i in 1:length(sums))
 ```{r ob3}
 Confirmed <- read.csv(file = "./time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
 
-total_row <- rowSums(Confirmed[, 5:ncol(Confirmed)])
-
-yesterday_total <- rowSums(Confirmed[, 5:(ncol(Confirmed)-1)])
-
-for (i in 1:(length(yesterday_total))) {
-  value <- yesterday_total[i]
-  if (value < 1)
-    print(i)
-  
+for(x in 1:nrow(Confirmed)){ #iterates through rows
+  i <- ncol(Confirmed) #Starts at the last column
+  Cases <- Confirmed[x,i] #Finds values for the number of cases
+  Cases_yesterday <- Confirmed[x,(i-1)] #Finds values for the number of cases the day before
+  if ((Cases > 0) & (Cases_yesterday == 0)){ #The first date of instance
+    print(x)
+    places <- Confirmed[x,3:4]
+    print(places)
+  } else {
+  i <- i - 1 #Moves back one column to find previous day
+  }
 }
 
-for (i in 1:length(total_row)) {
-  total_value <- total_row[i]
-  if (total_value < 1)
-    print(i)
-  
-}
 ```
 
 ### Objective 4
