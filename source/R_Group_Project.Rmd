@@ -137,25 +137,47 @@ print(new_cases)
 
 ### Objective 3
 ```{r ob3}
+confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
 
-recent_places <- data.frame(lat = nrow(confirmed), long = ncol(confirmed)) #creates dataframe to contain lat and long
+recent_places <- data.frame(Providence = nrow(confirmed), Country = ncol(confirmed), Lat = nrow(confirmed), Long = ncol(confirmed)) #create dataframe to contain lat and long
 
 y <- 1
 
 for(x in 1:nrow(confirmed)){ #iterates through rows
-  i <- ncol(confirmed) #Starts at the last column
-  cases <- confirmed[x,i] #Finds values for the number of cases
-  cases_yesterday <- confirmed[x,(i-1)] #Finds values for the number of cases the day before
-  if ((cases > 0) && (cases_yesterday == 0)){ #The first date of instance
-    print(x)
-    recent_places[y,1:2] <- confirmed[x,3:4]
+  i <- ncol(confirmed) #Start at the last column
+  new_cases <- confirmed[x,i] #Find values for the number of cases
+  cases_before <- confirmed[x,(i-1)] #Find values for the number of cases the day before
+  if (new_cases > 0 && cases_before == 0){ #The first date of instance
+    recent_places[y,1:4] <- confirmed[x,1:4]
     y <- y + 1
   } else {
-  i <- i - 1 #Moves back one column to find previous day
+  i <- i - 1 #Move back one column to find previous day
   }
 }
-recent_places <- recent_places[1:(y-1),1:(y-1)] #Truncate dataframe to correct size
-print(recent_places)
+
+recent_places <- recent_places[1:(y-1),] #Truncate dataframe to correct size
+
+y <- 1
+first_place <- data.frame(Providence = 1, Country = 1, Lat = 1, Long = 1)
+cases_number <- 0
+for (x in 1:nrow(confirmed)) {
+  i <- 5 #Start at first column of case number data
+  cases <- confirmed[x,i]
+  if (cases > cases_number) 
+    {
+    first_place[1,1:4] <- confirmed[x,1:4]
+    cases_number <- confirmed[x,i]
+    }
+  else 
+  {
+    i <- i + 1
+  }
+}
+
+dist_meter <- geosphere::distm(recent_places[,4:3], first_place[1,4:3], fun = distGeo) 
+dist_mile <- dist_meter/1609.344
+
+cat(paste0(recent_places[,2], " is ", dist_mile[], " miles away from ", first_place[,1], " ", first_place[,2], sep="\n"))
 
 ```
 
