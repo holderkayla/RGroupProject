@@ -74,14 +74,66 @@ recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", s
 deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
 #confirmed[, (confirmed[, 0:ncol(confirmed)] > 0)]
 lst <- list()
-
+#confirmed[ , ]
 for (i in 1:nrow(confirmed))
 {
-  key <- paste0(as.character(confirmed[ 71, 1]),as.character(confirmed[ 71, 2]))
-  key
+  key <- paste0(as.character(confirmed[ i, 1]),as.character(confirmed[ i, 2]))
+  num_of_cases <- confirmed[ i, 5]
+  
+  if (is.null(lst[[key]]) && num_of_cases > 0)
+  {
+    lst[[key]] <- num_of_cases
+  }
+  else if (confirmed[i, 5] > 0)
+  {
+    lst[[key]] <- lst[[key]] + num_of_cases
+  }
+  else
+  {
+    #do nothing
+  }
 }
+for (i in 1:nrow(recovered))
+{
+  key <- paste0(as.character(recovered[ i, 1]),as.character(recovered[ i, 2]))
+  num_of_cases <- recovered[ i, 5]
+  
+  if (is.null(lst[[key]]) && num_of_cases > 0)
+  {
+    lst[[key]] <- num_of_cases
+  }
+  else if (recovered[i, 5] > 0)
+  {
+    lst[[key]] <- lst[[key]] + num_of_cases
+  }
+  else
+  {
+    #do nothing
+  }
+}
+for (i in 1:nrow(deaths))
+{
+  key <- paste0(as.character(deaths[ i, 1]),as.character(deaths[ i, 2]))
+  num_of_cases <- deaths[ i, 5]
+  
+  if (is.null(lst[[key]]) && num_of_cases > 0)
+  {
+    lst[[key]] <- num_of_cases
+  }
+  else if (deaths[i, 5] > 0)
+  {
+    lst[[key]] <- lst[[key]] + num_of_cases
+  }
+  else
+  {
+    #do nothing
+  }
+}
+#thing <- lapply(lst, function(x) x[which.max(x)])
+#thing
+print(lst)
 #lst[[key]] <- 2
-lst[[key]]
+
 #confirmed
 #confirmed[, 5:(ncol(confirmed) -1)]
 #sums <- rowSums(confirmed_cases[, 5:(ncol(confirmed_cases)-1)])
