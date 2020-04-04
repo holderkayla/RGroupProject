@@ -1,0 +1,30 @@
+---
+title: "R Group Project 1 KH"
+output: pdf_document
+---
+Objective 3 
+Not complete
+```{r}
+Confirmed <- read.csv(file = "./time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
+
+total_row <- rowSums(Confirmed[, 5:ncol(Confirmed)])
+
+yesterday_total <- rowSums(Confirmed[, 5:(ncol(Confirmed)-1)])
+
+for (i in 1:(length(yesterday_total))) {
+  value <- yesterday_total[i]
+  if (value < 1)
+    print(i)
+  
+}
+
+for (i in 1:length(total_row)) {
+  total_value <- total_row[i]
+  if (total_value < 1)
+    print(i)
+  
+}
+
+
+```
+
