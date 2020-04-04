@@ -69,88 +69,51 @@ Date fields are stored in MM/DD/YYYY format.
 # Step3. Make a list of the first days places as keys and with a count as the value
 # Step4. go through the list and look for the max count, the corresponding location is the origin.
 # Step5. Print the location.
+add_first_day_cases <- function(lst, data_frame){
+  for (i in 1:nrow(data_frame))
+  {
+    #key will be the name of the place without spaces added.
+    key <- paste0(data_frame[ i, 1], " ", data_frame[ i, 2])
+    num_of_cases <- data_frame[ i, 5]
+    
+    if (is.null(lst[[key]]) && num_of_cases > 0)
+    {
+      lst[[key]] <- num_of_cases
+    }
+    else if (num_of_cases > 0)
+    {
+      lst[[key]] <- lst[[key]] + num_of_cases
+    }
+    else
+    {
+      #do nothing
+    }
+  }
+  lst # return lst
+}
+
+# read in data
 confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
 recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
 deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
-#confirmed[, (confirmed[, 0:ncol(confirmed)] > 0)]
-lst <- list()
-#confirmed[ , ]
-for (i in 1:nrow(confirmed))
-{
-  key <- paste0(as.character(confirmed[ i, 1]),as.character(confirmed[ i, 2]))
-  num_of_cases <- confirmed[ i, 5]
-  
-  if (is.null(lst[[key]]) && num_of_cases > 0)
-  {
-    lst[[key]] <- num_of_cases
-  }
-  else if (confirmed[i, 5] > 0)
-  {
-    lst[[key]] <- lst[[key]] + num_of_cases
-  }
-  else
-  {
-    #do nothing
-  }
-}
-for (i in 1:nrow(recovered))
-{
-  key <- paste0(as.character(recovered[ i, 1]),as.character(recovered[ i, 2]))
-  num_of_cases <- recovered[ i, 5]
-  
-  if (is.null(lst[[key]]) && num_of_cases > 0)
-  {
-    lst[[key]] <- num_of_cases
-  }
-  else if (recovered[i, 5] > 0)
-  {
-    lst[[key]] <- lst[[key]] + num_of_cases
-  }
-  else
-  {
-    #do nothing
-  }
-}
-for (i in 1:nrow(deaths))
-{
-  key <- paste0(as.character(deaths[ i, 1]),as.character(deaths[ i, 2]))
-  num_of_cases <- deaths[ i, 5]
-  
-  if (is.null(lst[[key]]) && num_of_cases > 0)
-  {
-    lst[[key]] <- num_of_cases
-  }
-  else if (deaths[i, 5] > 0)
-  {
-    lst[[key]] <- lst[[key]] + num_of_cases
-  }
-  else
-  {
-    #do nothing
-  }
-}
-#thing <- lapply(lst, function(x) x[which.max(x)])
-#thing
-print(lst)
-#lst[[key]] <- 2
-
-#confirmed
-#confirmed[, 5:(ncol(confirmed) -1)]
-#sums <- rowSums(confirmed_cases[, 5:(ncol(confirmed_cases)-1)])
-#if (confirmed[, 5] > 0) print("hi")
-#sums
-#for ( i in 1:length(sums))
-#{
-#   if (sums[i] == 0)
-#    {
-        #i is the row num   
-#    }
-#}
-#rowsum(confirmed[0:(nrow(confirmed)), 5 :(ncol(confirmed) -1)])
 
 
-# quote = "", row.names = NULL,  stringsAsFactors = FALSE
+first_day_cases <- list()
+
+
+# call function for each data set.
+first_day_cases <- add_first_day_cases(first_day_cases, confirmed)
+first_day_cases <- add_first_day_cases(first_day_cases, recovered)
+first_day_cases <- add_first_day_cases(first_day_cases, deaths)
+
+#Output answer
+places <- names(first_day_cases)
+ground_zero <- places[which.max(first_day_cases)]
+print(paste0("Ground zero for the virus seems to be ", ground_zero, "."))
+
+
 ```
+Objective 1, Answer: Now we believe this to be the origin because it has the maximum number of cases on day 0. See code comments for how the number of cases was computed. 
 
 ### Objective 2
 ```{r ob2}
