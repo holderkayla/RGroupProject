@@ -75,6 +75,7 @@ add_first_day_cases <- function(lst, data_frame){
   {
     #key will be the name of the place without spaces added.
     key <- paste0(data_frame[ i, 1], " ", data_frame[ i, 2])
+    
     num_of_cases <- data_frame[ i, 5]
     
     if (num_of_cases > 0 && is.null(lst[[key]]))
@@ -140,7 +141,7 @@ for(x in 1:nrow(confirmed)){ #iterates through rows
   i <- ncol(confirmed) #Starts at the last column
   cases <- confirmed[x,i] #Finds values for the number of cases
   cases_yesterday <- confirmed[x,(i-1)] #Finds values for the number of cases the day before
-  if ((cases > 0) & (cases_yesterday == 0)){ #The first date of instance
+  if ((cases > 0) && (cases_yesterday == 0)){ #The first date of instance
     print(x)
     recent_places[y,1:2] <- confirmed[x,3:4]
     y <- y + 1
@@ -157,8 +158,37 @@ print(recent_places)
 
 #### Objective 4.1
 ```{r ob4.1}
+#Algorithm
+#Step1. Find the risk for each area
+#Step2. Find the burden for each area
+#Step3. Find global risk and confirmed
 
-  
+# read in data
+confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
+recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
+deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
+
+sums_confirmed <- rowSums(confirmed[, 5:ncol(confirmed)])
+sums_recoveries <- rowSums(recovered[, 5:ncol(recovered)])
+sums_deaths <- rowSums(deaths[, 5:ncol(deaths)])
+
+places <- paste0(confirmed[ , 1], " ", confirmed[ , 2])
+risk <- sums_deaths / sums_recoveries
+#risk # NaN means a divide by zero has occured fin
+burden <- sums_confirmed * risk
+is.vector(risk)
+
+risk[which.min(risk)]
+risk[which.max(risk)]
+
+global_confirmed <- sum(sums_confirmed)
+global_recoveries <- sum(sums_recoveries)
+global_deaths <-  sum(sums_deaths)
+
+global_risk <- global_deaths / global_recoveries
+global_risk
+global_burden <- global_confirmed * global_risk
+global_burden
 ```
 
 #### Objective 4.2
