@@ -225,27 +225,33 @@ sums_recoveries <- rowSums(recovered[, 5:ncol(recovered)])
 sums_deaths <- rowSums(deaths[, 5:ncol(deaths)])
 
 # the countries are identical across the data sets so using one will do
-places <- confirmed[, 2]
+places_c <- confirmed[, 2]
+places_r <- recovered[, 2]
+places_d <- deaths[, 2]
 
 # creating empty vectors for the data
-countries <- vector()
+countries_c <- vector()
+countries_r <- vector()
+countries_d <- vector()
+
 total_confir <- vector()
 total_recov <- vector()
 total_deaths <- vector()
 
 # for every country in the original data sets
-for (i in 1:length(places)) {
+for (i in 1:length(places_c)) {
   
-  if (is.element(places[i], countries)) {
-    new <- match(places[i], countries)
+  if (is.element(places_c[i], countries_c)) {
+    # new <- match(places_c[i], countries_c)
   } 
   else {
     # If the element is not already in the countries vector
-    countries <- c(countries, places[i])
+    countries_c <- c(countries_c, places_c[i])
+    total_confir <- c(total_confir, sums_confirmed[i])
   }
 }
-# for testingtotal_data = data.frame(countries, total_confir, total_deaths, total_recov)
-print(countries)
+total_data = data.frame(countries, total_confir)
+print(total_data)
 # Once everything is working, we need to make these data frames and convert them to tables
 # confirmed_totals <- data.frame(countries, total_confir)
 # recovery_totals <- data.frame(countries, total_recov)
