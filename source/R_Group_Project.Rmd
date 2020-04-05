@@ -180,6 +180,8 @@ cat(paste0(ordered_info[,1], " is ", ordered_info[,2], " miles away from ", orde
 
 #### Objective 4.1
 ```{r ob4.1}
+install.packages("dplyr")
+library("dplyr")
 #Algorithm
 #Step1. Find the risk for each area
 #Step2. Find the burden for each area
@@ -190,51 +192,16 @@ confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", s
 recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
 deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
 
-tot_confirmed <- confirmed[, ncol(confirmed)]
-tot_recoveries <- recovered[, ncol(recovered)]
-tot_deaths <- deaths[, ncol(deaths)]
 
-global_deaths <- sum(tot_deaths)
-global_recoveries <- sum(tot_recoveries)
 
-global_risk <- global_deaths / global_recoveries
 
-# places <- paste0(confirmed[ , 1], " ", confirmed[ , 2])
-# places2 <- paste0(recovered[ , 1], " ", recovered[ , 2])
-
-# for (i in 1:length(places))
-# {
-  # if (places[i] != places2[i])
-  # {
-    # print(places2[i])
-  # }
-# }
-#filter
-
-# risk <- sums_deaths / sums_recoveries
-# burden <- sums_confirmed * risk
-
-# length(sums_confirmed) - length(sums_recoveries)
-
-# sums <- list(places, sums_confirmed, sums_recoveries, sums_deaths)
-# sums[["Afghanistan"]]
-
-# lowest_risk <- places[which.min(risk)]
-# hightest_risk <- places[which.max(risk)]
-# risk[which.min(risk)]
-# risk[which.max(risk)]
-# global_confirmed <- sum(sums_confirmed)
-# global_recoveries <- sum(sums_recoveries)
-# global_deaths <-  sum(sums_deaths)
-
-# global_risk <- global_deaths / global_recoveries
-# global_risk
-# global_burden <- global_confirmed * global_risk
-# global_burden
 ```
 
 #### Objective 4.2
 ```{r ob4.2}
+install.packages("dplyr")
+library("dplyr")
+
 #Generates total data frames
 generate_total_df <- function(places, sums, column_name)
 {
@@ -268,20 +235,6 @@ generate_total_df <- function(places, sums, column_name)
   
 }
 
-#Sort data frame by the second column
-
-sort_data_frame <- function(df)
-  
-{
-  
-  column_2 <- colnames(df)[2]
-  
-  df[[column_2]] <- as.numeric(as.character(df[[column_2]]))
-  
-  df[order(-df[[column_2]]),]
-  
-}
-
 #Read input from csv files
 
 confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
@@ -307,12 +260,11 @@ total_recoveries <- generate_total_df(recovered$Country.Region,  sums_recoveries
 total_deaths <- generate_total_df(deaths$Country.Region, sums_deaths, "total_deaths")
 
 #Sort the data_frames
+total_confirmations_sorted <- arrange(total_confirmations, -total_confirmations)
 
-total_confirmations_sorted <- sort_data_frame(total_confirmations)
+total_recoveries_sorted <-arrange(total_recoveries, -total_recoveries)
 
-total_recoveries_sorted <- sort_data_frame(total_recoveries)
-
-total_deaths_sorted <- sort_data_frame(total_deaths)
+total_deaths_sorted <- arrange(total_deaths, -total_deaths)
 
 #Output the data_frames as a table
 
