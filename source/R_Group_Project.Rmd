@@ -232,55 +232,78 @@ global_burden
 
 #### Objective 4.2
 ```{r ob4.2}
-
-generate_total_df <- function(places, countries, total, sums, column_name)
+#Generates total data frames
+generate_total_df <- function(places, sums, column_name)
 {
+  countries <- vector()
+  
+  total_cases <- vector()
+  
   for (i in 1:length(places)){
+    
     if (is.element(places[i], countries)){
+      
       new <- match(places[i], countries)
-      total[new] <- total[new] + sums[i] 
+      
+      total_cases[new] <- total_cases[new] + sums[i] 
     }
     else{
       countries <- c(countries, places[i])
-      total <- c(total, sums[i])
+      
+      total_cases <- c(total_cases, sums[i])
     }
   }
-  total <- data.frame(countries, total)
-  colnames(total) <- c("countries", column_name)
-  total
+  total_cases <- data.frame(countries, total_cases)
+  
+  colnames(total_cases) <- c("countries", column_name)
+  
+  total_cases
 }
 
+#Sort data frame by the second column
+sort_data_frame <- function(df)
+{
+  column_2 <- colnames(df)[2]
+  
+  df[[column_2]] <- as.numeric(as.character(df[[column_2]]))
+  
+  df[order(-df[[column_2]]),]
+}
+
+#Read input from csv files
 confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
+
 recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
+
 deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
 
+#calculate the sums of each
 sums_confirmed <- rowSums(confirmed[, 5:ncol(confirmed)])
+
 sums_recoveries <- rowSums(recovered[, 5:ncol(recovered)])
+
 sums_deaths <- rowSums(deaths[, 5:ncol(deaths)])
 
-# the countries are identical across the data sets so using one will do
-places_c <- confirmed[, 2]
-places_r <- recovered[, 2]
-places_d <- deaths[, 2]
+#Generate the totals
+total_confirmations <- generate_total_df(confirmed$Country.Region, sums_confirmed, "total_confirmations")
 
-# creating empty vectors for the data
-countries_c <- vector()
-countries_r <- vector()
-countries_d <- vector()
+total_recoveries <- generate_total_df(recovered$Country.Region,  sums_recoveries, "total_recoveries")
 
-total_confirmations <- vector()
-total_recoveries <- vector()
-total_deaths <- vector()
+total_deaths <- generate_total_df(deaths$Country.Region, sums_deaths, "total_deaths")
 
-# for every country in the original data sets
-total_data <- generate_total_df(places_c, countries_c, total_confirmations, sums_confirmed, "total confirmations")
-print(total_data)
+#Sort the data_frames
+total_confirmations_sorted <- sort_data_frame(total_confirmations)
 
-total_data2 <- generate_total_df(places_r, countries_r, total_recoveries, sums_recoveries, "total recoveries")
-print(total_data2)
+total_recoveries_sorted <- sort_data_frame(total_recoveries)
 
-total_data3 <- generate_total_df(places_d, countries_d, total_deaths, sums_deaths, "total deaths")
-print(total_data3)
+total_deaths_sorted <- sort_data_frame(total_deaths)
+
+#Output the data_frames as a table
+kable(total_confirmations_sorted[1:5,])
+
+kable(total_recoveries_sorted[1:5,])
+
+kable(total_deaths_sorted[1:5,])
 
 
 
