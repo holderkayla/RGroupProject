@@ -195,7 +195,6 @@ sums_recoveries <- rowSums(recovered[, 5:ncol(recovered)])
 sums_deaths <- rowSums(deaths[, 5:ncol(deaths)])
 
 places <- paste0(confirmed[ , 1], " ", confirmed[ , 2])
-<<<<<<< HEAD
 places2 <- paste0(recovered[ , 1], " ", recovered[ , 2])
 
 for (i in 1:length(places))
@@ -206,9 +205,7 @@ for (i in 1:length(places))
   }
 }
 #filter
-=======
 
->>>>>>> 83a33e176451886d7f07001af9051c7bf22a7996
 risk <- sums_deaths / sums_recoveries
 #risk # NaN means a divide by zero has occured fin
 burden <- sums_confirmed * risk
@@ -253,27 +250,24 @@ total_recov <- vector()
 total_deaths <- vector()
 
 # for every country in the original data sets
-for (i in 1:length(places)) {
-  
-  if (is.element(places[i], countries)) {
+for (x in 1:length(sums_confirmed)) {
+  for (i in 1:length(places)) {
+    if (is.element(places[i], countries)) {
     # If the element is already in the countries vector
-    # Unfinished: we need to create a running total here
+      total_confir[i] <- sums_confirmed[x]
   } 
-  else {
+    else {
     # If the element is not already in the countries vector
-    countries <- c(countries, places[i])
-    total_confir <- c(total_confir, sums_confirmed[i])
-    total_recov <- c(total_recov, sums_recoveries[i])
-    total_deaths <- c(total_deaths, sums_deaths[i])
+      countries <- c(countries, places[i])
+      total_confir <- c(total_confir, sums_confirmed[i])
+      total_recov <- c(total_recov, sums_recoveries[i])
+      total_deaths <- c(total_deaths, sums_deaths[i])
+    }
   }
 }
-# for testing
-total_data = data.frame(countries, total_confir, total_deaths, total_recov)
-print(total_data)
-# Once everything is working, we need to make these data frames and convert them to tables
-# confirmed_totals <- data.frame(countries, total_confir)
-# recovery_totals <- data.frame(countries, total_recov)
-# death_totals <- data.frame(countries, total_deaths)
+
+print(total_confir)
+
 
 
 ```
