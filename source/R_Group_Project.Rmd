@@ -195,14 +195,30 @@ sums_recoveries <- rowSums(recovered[, 5:ncol(recovered)])
 sums_deaths <- rowSums(deaths[, 5:ncol(deaths)])
 
 places <- paste0(confirmed[ , 1], " ", confirmed[ , 2])
+places2 <- paste0(recovered[ , 1], " ", recovered[ , 2])
+
+for (i in 1:length(places))
+{
+  if (places[i] != places2[i])
+  {
+    print(places2[i])
+  }
+}
+#filter
 risk <- sums_deaths / sums_recoveries
 #risk # NaN means a divide by zero has occured fin
 burden <- sums_confirmed * risk
-is.vector(risk)
 
+
+length(sums_confirmed) - length(sums_recoveries)
+
+sums <- list(places, sums_confirmed, sums_recoveries, sums_deaths)
+sums[["Afghanistan"]]
+
+lowest_risk <- places[which.min(risk)]
+hightest_risk <- places[which.max(risk)]
 risk[which.min(risk)]
 risk[which.max(risk)]
-
 global_confirmed <- sum(sums_confirmed)
 global_recoveries <- sum(sums_recoveries)
 global_deaths <-  sum(sums_deaths)
