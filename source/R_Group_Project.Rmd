@@ -180,7 +180,6 @@ cat(paste0(ordered_info[,1], " is ", ordered_info[,2], " miles away from ", orde
 
 #### Objective 4.1
 ```{r ob4.1}
-install.packages("dplyr")
 library("dplyr")
 #Algorithm
 #Step1. Find the risk for each area
@@ -192,7 +191,12 @@ confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", s
 recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
 deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
 
+colnames(confirmed)
+unique_regions <- select(recovered, Province.State, Country)
+non_regions <- select(confirmed, Province.State)
+intersect(unique_regions, non_regions)
 
+#filter(confirmed, province.State)
 
 
 ```
