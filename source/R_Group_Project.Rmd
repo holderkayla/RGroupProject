@@ -187,8 +187,8 @@ global_deaths <-  sum(sums_deaths)
 
 global_risk <- global_deaths / global_recoveries
 global_risk
-global_burden <- global_confirmed * global_risk
 global_burden
+global_burden <- global_confirmed * global_risk
 ```
 
 #### Objective 4.2
