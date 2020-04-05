@@ -139,9 +139,7 @@ print(new_cases)
 ```{r ob3}
 confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
 recent_places <- data.frame(Providence = nrow(confirmed), Country = ncol(confirmed), Lat = nrow(confirmed), Long = ncol(confirmed)) #create dataframe to contain lat and long
-
 y <- 1
-
 for(x in 1:nrow(confirmed)){ #iterates through rows
   i <- ncol(confirmed) #Start at the last column
   new_cases <- confirmed[x,i] #Find values for the number of cases
@@ -153,7 +151,6 @@ for(x in 1:nrow(confirmed)){ #iterates through rows
   i <- i - 1 #Move back one column to find previous day
   }
 }
-
 recent_places <- recent_places[1:(y-1),] #Truncate dataframe to correct size
 y <- 1
 first_place <- data.frame(Providence = 1, Country = 1, Lat = 1, Long = 1)
@@ -173,7 +170,9 @@ for (x in 1:nrow(confirmed)) {
 }
 dist_meter <- geosphere::distm(recent_places[,4:3], first_place[1,4:3], fun = distGeo) 
 dist_mile <- dist_meter/1609.344
-cat(paste0(recent_places[,2], " is ", dist_mile[], " miles away from ", first_place[,1], " ", first_place[,2], sep="\n"))
+full_info <- data.frame(recent_places[,2], dist_mile[], first_place[,1:2])
+ordered_info <- full_info[order(dist_mile),]
+cat(paste0(ordered_info[,1], " is ", ordered_info[,2], " miles away from ", ordered_info[,3], ", ", ordered_info[,4], sep="\n"))
 
 ```
 
