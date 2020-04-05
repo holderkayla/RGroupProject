@@ -190,44 +190,47 @@ confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", s
 recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
 deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
 
-sums_confirmed <- rowSums(confirmed[, 5:ncol(confirmed)])
-sums_recoveries <- rowSums(recovered[, 5:ncol(recovered)])
-sums_deaths <- rowSums(deaths[, 5:ncol(deaths)])
+tot_confirmed <- confirmed[, ncol(confirmed)]
+tot_recoveries <- recovered[, ncol(recovered)]
+tot_deaths <- deaths[, ncol(deaths)]
 
-places <- paste0(confirmed[ , 1], " ", confirmed[ , 2])
-places2 <- paste0(recovered[ , 1], " ", recovered[ , 2])
-
-for (i in 1:length(places))
-{
-  if (places[i] != places2[i])
-  {
-    print(places2[i])
-  }
-}
-#filter
-
-risk <- sums_deaths / sums_recoveries
-#risk # NaN means a divide by zero has occured fin
-burden <- sums_confirmed * risk
-
-
-length(sums_confirmed) - length(sums_recoveries)
-
-sums <- list(places, sums_confirmed, sums_recoveries, sums_deaths)
-sums[["Afghanistan"]]
-
-lowest_risk <- places[which.min(risk)]
-hightest_risk <- places[which.max(risk)]
-risk[which.min(risk)]
-risk[which.max(risk)]
-global_confirmed <- sum(sums_confirmed)
-global_recoveries <- sum(sums_recoveries)
-global_deaths <-  sum(sums_deaths)
+global_deaths <- sum(tot_deaths)
+global_recoveries <- sum(tot_recoveries)
 
 global_risk <- global_deaths / global_recoveries
-global_risk
-global_burden <- global_confirmed * global_risk
-global_burden
+
+# places <- paste0(confirmed[ , 1], " ", confirmed[ , 2])
+# places2 <- paste0(recovered[ , 1], " ", recovered[ , 2])
+
+# for (i in 1:length(places))
+# {
+  # if (places[i] != places2[i])
+  # {
+    # print(places2[i])
+  # }
+# }
+#filter
+
+# risk <- sums_deaths / sums_recoveries
+# burden <- sums_confirmed * risk
+
+# length(sums_confirmed) - length(sums_recoveries)
+
+# sums <- list(places, sums_confirmed, sums_recoveries, sums_deaths)
+# sums[["Afghanistan"]]
+
+# lowest_risk <- places[which.min(risk)]
+# hightest_risk <- places[which.max(risk)]
+# risk[which.min(risk)]
+# risk[which.max(risk)]
+# global_confirmed <- sum(sums_confirmed)
+# global_recoveries <- sum(sums_recoveries)
+# global_deaths <-  sum(sums_deaths)
+
+# global_risk <- global_deaths / global_recoveries
+# global_risk
+# global_burden <- global_confirmed * global_risk
+# global_burden
 ```
 
 #### Objective 4.2
@@ -246,31 +249,41 @@ generate_total_df <- function(places, sums, column_name)
       new <- match(places[i], countries)
       
       total_cases[new] <- total_cases[new] + sums[i] 
+      
     }
     else{
+      
       countries <- c(countries, places[i])
       
       total_cases <- c(total_cases, sums[i])
+      
     }
   }
+  
   total_cases <- data.frame(countries, total_cases)
   
   colnames(total_cases) <- c("countries", column_name)
   
   total_cases
+  
 }
 
 #Sort data frame by the second column
+
 sort_data_frame <- function(df)
+  
 {
+  
   column_2 <- colnames(df)[2]
   
   df[[column_2]] <- as.numeric(as.character(df[[column_2]]))
   
   df[order(-df[[column_2]]),]
+  
 }
 
 #Read input from csv files
+
 confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
 
 recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
@@ -278,13 +291,15 @@ recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", s
 deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
 
 #calculate the sums of each
-sums_confirmed <- rowSums(confirmed[, 5:ncol(confirmed)])
 
-sums_recoveries <- rowSums(recovered[, 5:ncol(recovered)])
+sums_confirmed <- confirmed[, ncol(confirmed)]
 
-sums_deaths <- rowSums(deaths[, 5:ncol(deaths)])
+sums_recoveries <- recovered[, ncol(recovered)]
+
+sums_deaths <- deaths[, ncol(deaths)]
 
 #Generate the totals
+
 total_confirmations <- generate_total_df(confirmed$Country.Region, sums_confirmed, "total_confirmations")
 
 total_recoveries <- generate_total_df(recovered$Country.Region,  sums_recoveries, "total_recoveries")
@@ -292,6 +307,7 @@ total_recoveries <- generate_total_df(recovered$Country.Region,  sums_recoveries
 total_deaths <- generate_total_df(deaths$Country.Region, sums_deaths, "total_deaths")
 
 #Sort the data_frames
+
 total_confirmations_sorted <- sort_data_frame(total_confirmations)
 
 total_recoveries_sorted <- sort_data_frame(total_recoveries)
@@ -299,13 +315,12 @@ total_recoveries_sorted <- sort_data_frame(total_recoveries)
 total_deaths_sorted <- sort_data_frame(total_deaths)
 
 #Output the data_frames as a table
+
 kable(total_confirmations_sorted[1:5,])
 
 kable(total_recoveries_sorted[1:5,])
 
 kable(total_deaths_sorted[1:5,])
-
-
 
 ```
 
