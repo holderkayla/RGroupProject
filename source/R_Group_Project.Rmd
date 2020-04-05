@@ -242,7 +242,8 @@ total_deaths <- vector()
 for (i in 1:length(places_c)) {
   
   if (is.element(places_c[i], countries_c)) {
-    # new <- match(places_c[i], countries_c)
+    new <- match(places_c[i], countries_c)
+    total_confir[new] <- total_confir[new] + sums_confirmed[i]
   } 
   else {
     # If the element is not already in the countries vector
@@ -250,13 +251,42 @@ for (i in 1:length(places_c)) {
     total_confir <- c(total_confir, sums_confirmed[i])
   }
 }
-total_data = data.frame(countries, total_confir)
+total_data = data.frame(countries_c, total_confir)
 print(total_data)
-# Once everything is working, we need to make these data frames and convert them to tables
-# confirmed_totals <- data.frame(countries, total_confir)
-# recovery_totals <- data.frame(countries, total_recov)
-# death_totals <- data.frame(countries, total_deaths)
 
+
+
+for (i in 1:length(places_r)) {
+  
+  if (is.element(places_r[i], countries_r)) {
+    new <- match(places_r[i], countries_r)
+    total_recov[new] <- total_recov[new] + sums_recoveries[i]
+  } 
+  else {
+    # If the element is not already in the countries vector
+    countries_r <- c(countries_r, places_r[i])
+    total_recov <- c(total_recov, sums_recoveries[i])
+  }
+}
+total_data2 = data.frame(countries_r, total_recov)
+print(total_data2)
+
+
+
+for (i in 1:length(places_d)) {
+  
+  if (is.element(places_d[i], countries_d)) {
+    new <- match(places_d[i], countries_d)
+    total_deaths[new] <- total_deaths[new] + sums_deaths[i]
+  } 
+  else {
+    # If the element is not already in the countries vector
+    countries_d <- c(countries_d, places_d[i])
+    total_deaths <- c(total_deaths, sums_deaths[i])
+  }
+}
+total_data3 = data.frame(countries_d, total_deaths)
+print(total_data3)
 
 ```
 
