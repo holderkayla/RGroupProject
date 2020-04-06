@@ -306,7 +306,7 @@ maxs_risk
 Objective 4.1 Questions
 Question 1. China has the lowest risk rate. We believe this could be because they are ground zero, thus allowing more people to recover and thus driving down the risk rate. Furthermore, China has enacted many containment policies. The data may also not be accurate due to reasons unknown to us statisticians in training. 
 
-Question 2. So the places with the highest risk scores are the Pacific Islands and some African nations and islands. It seems places highest are the places with the least exposure. 
+Question 2. The places with the highest risk scores are the Pacific Islands and some African nations and islands. It seems places highest are the places with the least exposure. It can be reasoned that they are at the most risk of developing cases since they have not been exposed to the virus yet.
 
 Question 3. The low risk scores are pretty small and close to the global risk score. However, the risk scores of the maxs is not close to the global risk score. They could be outliers. 
 
