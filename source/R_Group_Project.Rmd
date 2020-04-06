@@ -245,12 +245,7 @@ cat(paste0(ordered_info[,1], " is ", ordered_info[,2], " miles away from ", orde
 ### Objective 4
 
 #### Objective 4.1
-<<<<<<< HEAD
 ```{r ob4.1, echo=T, include=TRUE}
-library("dplyr")
-=======
-```{r ob4.1}
->>>>>>> 287e54f727ccc46296145770e6e8c442e4e0b8ba
 #Algorithm
 #Step1. Find the risk for each area
 #Step2. Find the burden for each area
@@ -323,13 +318,7 @@ Question 6. As already stated this discrepancy occurs when a zero appears in the
 Question 7. It could be helpful to tell the the ratio of deaths to recoveries. However, it does not account for other factors such as people who have it and to not report or people who do not know that they have it and recover. The final thing is that the report relies on honesty and willing to share data, and all players sadly are not.
 
 #### Objective 4.2
-<<<<<<< HEAD
 ```{r ob4.2, echo=T, include=TRUE}
-install.packages("dplyr")
-library("dplyr")
-=======
-```{r ob4.2}
->>>>>>> 287e54f727ccc46296145770e6e8c442e4e0b8ba
 
 #Generates total data frames
 generate_total_df <- function(places, sums, column_name)
