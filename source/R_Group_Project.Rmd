@@ -197,12 +197,16 @@ recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", s
 
 deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
 
+#Find global data
+global_confirmations <- sum(confirmed[, length(confirmed)])
 
 global_recoveries <- sum(recovered[, length(recovered)])
 
 global_deaths <- sum(deaths[, length(deaths)])
 
 global_risk <- global_deaths / global_recoveries
+
+global_burden <- global_confirmations * global_risk
 
 modified_confirmed <- left_join(recovered, confirmed, by = c("Province.State", "Country.Region"))
 modified_deaths <- left_join(recovered, deaths, by = c("Province.State", "Country.Region"))
@@ -217,13 +221,25 @@ recovered_with_scores <- mutate(
   burden_score = burden
 )
 
-mins <- filter(recovered_with_scores, risk_score == min(recovered_with_scores$risk_score, na.rm = TRUE))
- 
-maxs <- filter(recovered_with_scores, risk_score == max(recovered_with_scores$risk_score, na.rm = TRUE, inf.rm = TRUE))
- mins <- select(mins, Province.State, Country.Region, risk_score, burden_score)
- maxs <- select(maxs, Province.State, Country.Region, risk_score, burden_score)
- mins
- maxs
+#Pick only the 4 neccassary columns. 
+mins_risk <- select(
+  filter(recovered_with_scores, risk_score == min(recovered_with_scores$risk_score, na.rm = TRUE)), 
+  Province.State, Country.Region, risk_score, burden_score
+)
+
+maxs_risk <- select(
+  filter(recovered_with_scores, risk_score == max(recovered_with_scores$risk_score, na.rm = TRUE, inf.rm = TRUE)), 
+  Province.State, Country.Region, risk_score, burden_score
+)
+
+#Output this is the data to read
+global_risk
+
+global_burden
+
+mins_risk
+
+maxs_risk
 ```
 
 #### Objective 4.2
