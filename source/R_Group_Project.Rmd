@@ -26,7 +26,7 @@ header-includes:
 #### Load necessary packages ####
 # * These packages are not necessary to complete the assignment and or only used 
 #   to provide an example. 
-packages <- c("knitr", "kableExtra", "magrittr", "readr", "geosphere")
+packages <- c("knitr", "kableExtra", "magrittr", "readr", "geosphere", "dplyr")
 install_me <- packages[!(packages %in% installed.packages()[, "Package"])]
 if (length(install_me)) install.packages(install_me)
 library(knitr)
@@ -34,6 +34,7 @@ library(knitr)
 library(magrittr)
 library(readr)
 library(geosphere)
+library(dplyr)
 ```
 
 ## Background
@@ -55,7 +56,7 @@ Date fields are stored in MM/DD/YYYY format.
 ######Make function definition file#############
 ######Make data grab happen in one place#######
 ### Objective 1
-```{r ob1}
+```{r ob1, echo=T, include=TRUE}
 # Algorithm 
 # Step1. Read in csv files.
 # Step2. find which column is the first day.
@@ -111,63 +112,132 @@ print(paste0("Ground zero for the virus seems to be ", ground_zero, "."))
 
 
 ```
-Objective 1, Answer: Now we believe this to be the origin because it has the maximum number of cases on day 0. See code comments for how the number of cases was computed. 
+Objective 1, Answer: We believe this to be the origin because it has the maximum number of cases on day 0. The dataset begins with the recorded cases starting with date 1/22/20, which is after the first case globally was found. The day that the first case for any area was recorded is not included within the dataset. To find the most likely area to have the global first case it is believed that the area would have the most cases by 1/22/20. See code comments for how the number of cases was computed. 
 
 ### Objective 2
-```{r ob2}
+```{r ob2, echo=T, include=TRUE}
 confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
-sums <- rowSums(confirmed[, 5:(ncol(confirmed)-1)])
-current_day <- confirmed[, ncol(confirmed)]
-new_cases <- vector()
 
-for ( i in 1:length(sums))
-{
-  if (sums[i] == 0 && current_day[i] > 0)
-    {
-        new_cases <- c(new_cases, confirmed[i, 2])
-    }
+#Dataframe to contain Providence and Country for the places with the most recent first cases
+recent_places <- data.frame(Providence = nrow(confirmed), Country = ncol(confirmed)) 
+
+y <- 1
+
+#iterates through rows
+for(x in 1:nrow(confirmed)){ 
+  
+  #Start at the last column
+  i <- ncol(confirmed) 
+  
+  #Values for the number of cases
+  new_cases <- confirmed[x,i] 
+  
+  #Values for the number of cases the day before
+  cases_before <- confirmed[x,(i-1)]
+  
+  #The first date of instance
+  if (new_cases > 0 && cases_before == 0){ 
+    
+    recent_places[y,1:2] <- confirmed[x,1:2]
+    
+    y <- y + 1
+    
+  } else {
+    
+  #Move back one column to find previous day if no matches found
+  i <- i - 1 
+  
+  }
 }
 
-print(new_cases)
+#Change dataframe to correct size
+recent_places <- recent_places[1:(y-1),] 
+
+print(recent_places)
 ```
 
 ### Objective 3
-```{r ob3}
+```{r ob3, echo=T, include=TRUE}
+
 confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
-recent_places <- data.frame(Providence = nrow(confirmed), Country = ncol(confirmed), Lat = nrow(confirmed), Long = ncol(confirmed)) #Dataframe to contain lat and long
+
+#Dataframe to contain Providence, Country, Lat and Long for the places with the most recent first cases
+recent_places <- data.frame(Providence = nrow(confirmed), Country = ncol(confirmed), Lat = nrow(confirmed), Long = ncol(confirmed)) 
+
 y <- 1
-for(x in 1:nrow(confirmed)){ #iterates through rows
-  i <- ncol(confirmed) #Start at the last column
-  new_cases <- confirmed[x,i] #Values for the number of cases
-  cases_before <- confirmed[x,(i-1)] #Values for the number of cases the day before
-  if (new_cases > 0 && cases_before == 0){ #The first date of instance
+
+#iterates through rows
+for(x in 1:nrow(confirmed)){ 
+  
+  #Start at the last column
+  i <- ncol(confirmed) 
+  
+  #Values for the number of cases
+  new_cases <- confirmed[x,i] 
+  
+  #Values for the number of cases the day before
+  cases_before <- confirmed[x,(i-1)]
+  
+  #The first date of instance
+  if (new_cases > 0 && cases_before == 0){ 
+    
     recent_places[y,1:4] <- confirmed[x,1:4]
+    
     y <- y + 1
+    
   } else {
-  i <- i - 1 #Move back one column to find previous day if no matches found
+    
+  #Move back one column to find previous day if no matches found
+  i <- i - 1 
+  
   }
 }
-recent_places <- recent_places[1:(y-1),] #Truncate dataframe to correct size
+
+#Change dataframe to correct size
+recent_places <- recent_places[1:(y-1),] 
+
 y <- 1
+
 first_place <- data.frame(Providence = 1, Country = 1, Lat = 1, Long = 1)
+
 cases_number <- 0
+
 for (x in 1:nrow(confirmed)) {
-  i <- 5 #Start at first column of case number data
-  cases <- confirmed[x,i] #Values for the number of cases
-  if (cases > cases_number) #Largest number of cases on earliest day reported
+ 
+  #Start at first column of case number data 
+  i <- 5 
+  
+  #Values for the number of cases
+  cases <- confirmed[x,i] 
+  
+  #Largest number of cases on earliest day reported
+  if (cases > cases_number) 
+    
     {
     first_place[1,1:4] <- confirmed[x,1:4] 
+    
     cases_number <- confirmed[x,i]
     }
   else 
+    
   {
-    i <- i + 1 #Move to next day if no cases found
+    #Move to next day if no cases found
+    i <- i + 1 
+    
   }
 }
-dist_meter <- geosphere::distm(recent_places[,4:3], first_place[1,4:3], fun = distGeo) #Distance in meters from origin
-dist_mile <- dist_meter/1609.344 #Distance in miles from origin
-full_info <- data.frame(recent_places[,2], dist_mile[], first_place[,1:2]) #Dataframe with print information
-ordered_info <- full_info[order(dist_mile),] #Order by distance from least to greatest
+#Distance in meters from origin
+dist_meter <- geosphere::distm(recent_places[,4:3], first_place[1,4:3], fun = distGeo) 
+
+#Distance in miles from origin
+dist_mile <- dist_meter/1609.344 
+
+#Dataframe with print information
+full_info <- data.frame(recent_places[,2], dist_mile[], first_place[,1:2]) 
+
+#Order by distance from least to greatest
+ordered_info <- full_info[order(dist_mile),] 
+
 cat(paste0(ordered_info[,1], " is ", ordered_info[,2], " miles away from ", ordered_info[,3], ", ", ordered_info[,4], sep="\n"))
 
 ```
@@ -175,8 +245,12 @@ cat(paste0(ordered_info[,1], " is ", ordered_info[,2], " miles away from ", orde
 ### Objective 4
 
 #### Objective 4.1
-```{r ob4.1}
+<<<<<<< HEAD
+```{r ob4.1, echo=T, include=TRUE}
 library("dplyr")
+=======
+```{r ob4.1}
+>>>>>>> 287e54f727ccc46296145770e6e8c442e4e0b8ba
 #Algorithm
 #Step1. Find the risk for each area
 #Step2. Find the burden for each area
@@ -249,9 +323,13 @@ Question 6. As already stated this discrepancy occurs when a zero appears in the
 Question 7. It could be helpful to tell the the ratio of deaths to recoveries. However, it does not account for other factors such as people who have it and to not report or people who do not know that they have it and recover. The final thing is that the report relies on honesty and willing to share data, and all players sadly are not.
 
 #### Objective 4.2
-```{r ob4.2}
+<<<<<<< HEAD
+```{r ob4.2, echo=T, include=TRUE}
 install.packages("dplyr")
 library("dplyr")
+=======
+```{r ob4.2}
+>>>>>>> 287e54f727ccc46296145770e6e8c442e4e0b8ba
 
 #Generates total data frames
 generate_total_df <- function(places, sums, column_name)
