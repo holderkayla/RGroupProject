@@ -191,6 +191,12 @@ confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", s
 recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
 deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
 
+
+global_recoveries <- sum(recovered[, length(recovered)])
+global_deaths <- sum(deaths[, length(deaths)])
+
+global_risk <- global_deaths / global_recoveries
+
 #colnames(confirmed)
 unique_regions <- select(recovered, Province.State, Country.Region)
 non_regions <- select(deaths, Province.State, Country.Region)
