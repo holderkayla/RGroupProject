@@ -1,11 +1,3 @@
-Skip to content
- TheMandarax / CSIT-165
-Code Issues 0 Pull requests 1 Projects 0 Actions Wiki Security Pulse Community
-CSIT-165/Project-1/template.Rmd
-@TheMandarax TheMandarax Project 1
-da4cf17 18 days ago
-95 lines (70 sloc)  2.36 KB
- 
 ---
 title: "Project 1"
 author: "Name:  \n Partner: "
@@ -233,14 +225,28 @@ maxs_risk <- select(
 )
 
 #Output this is the data to read
-global_risk
+print(paste0("The global risk is ", global_risk))
 
-global_burden
+print(paste0("The global burden is ", global_burden))
 
 mins_risk
 
 maxs_risk
 ```
+Objective 4.1 Questions
+Question 1. China has the lowest risk rate. We believe this could be because they are ground zero, thus allowing more people to recover and thus driving down the risk rate. Furthermore, China has enacted many containment policies. The data may also not be accurate due to reasons unknown to us statisticians in training. 
+
+Question 2. So the places with the highest risk scores are the Pacific Islands and some African nations and islands. It seems places highest are the places with the least exposure. 
+
+Question 3. The low risk scores are pretty small and close to the global risk score. However, the risk scores of the maxs is not close to the global risk score. They could be outliers. 
+
+Question 4. The least risks and most risks places of the world have the same burden scores as their risk scores. This occured because burden is the sum of confirmed times the risk score, thus if you have zero risk you will have zero burden, and if you have infinite risk you will have infinite burden. This also makes sense analytically since burden corresponds to risk.
+
+Question 5. Some of these values seem reasonable for example not have any risk because nobody has died yet. But, having infinite risk because we performed a divide by zero because no one has recovered yet. 
+
+Question 6. As already stated this discrepancy occurs when a zero appears in the denonimator.Or when a data point is missing. Or when we have a NaN in the data set.
+
+Question 7. It could be helpful to tell the the ratio of deaths to recoveries. However, it does not account for other factors such as people who have it and to not report or people who do not know that they have it and recover. The final thing is that the report relies on honesty and willing to share data, and all players sadly are not.
 
 #### Objective 4.2
 ```{r ob4.2}
