@@ -314,7 +314,7 @@ Question 4. The least risks and most risks places of the world have the same bur
 
 Question 5. Some of these values seem reasonable for example not have any risk because nobody has died yet. But, having infinite risk because we performed a divide by zero because no one has recovered yet. 
 
-Question 6. As already stated this discrepancy occurs when a zero appears in the denonimator.Or when a data point is missing. Or when we have a NaN in the data set.
+Question 6. As already stated this discrepancy occurs when a zero appears in the denonimator. This can also occur when a data point is missing. Another cause for the discrepancy is if there is a NaN in the data set.
 
 Question 7. It could be helpful to tell the the ratio of deaths to recoveries. However, it does not account for other factors such as people who have it and to not report or people who do not know that they have it and recover. The final thing is that the report relies on honesty and willing to share data, and all players sadly are not.
 
