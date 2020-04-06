@@ -308,11 +308,11 @@ Question 1. China has the lowest risk rate. We believe this could be because the
 
 Question 2. The places with the highest risk scores are the Pacific Islands and some African nations and islands. It seems places highest are the places with the least exposure. It can be reasoned that they are at the most risk of developing cases since they have not been exposed to the virus yet.
 
-Question 3. The low risk scores are pretty small and close to the global risk score. However, the risk scores of the maxs is not close to the global risk score. They could be outliers. 
+Question 3. The low risk scores are pretty small and close to the global risk score. However, the risk scores of the maxs is not close to the global risk score. They could be outliers due to how small their sample size is.
 
 Question 4. The least risks and most risks places of the world have the same burden scores as their risk scores. This occured because burden is the sum of confirmed times the risk score, thus if you have zero risk you will have zero burden, and if you have infinite risk you will have infinite burden. This also makes sense analytically since burden corresponds to risk.
 
-Question 5. Some of these values seem reasonable for example not have any risk because nobody has died yet. But, having infinite risk because we performed a divide by zero because no one has recovered yet. 
+Question 5. Some of these values seem reasonable for example a country with no deaths has no risk score. However, because some countries dont have any recoveries we have to divide by 0, giving us an infinite risk score even when there are very few deaths.
 
 Question 6. As already stated this discrepancy occurs when a zero appears in the denonimator. This can also occur when a data point is missing. Another cause for the discrepancy is if there is a NaN in the data set.
 
