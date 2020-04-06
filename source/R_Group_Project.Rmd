@@ -34,7 +34,7 @@ header-includes:
 #### Load necessary packages ####
 # * These packages are not necessary to complete the assignment and or only used 
 #   to provide an example. 
-packages <- c("knitr", "kableExtra", "magrittr", "readr", "geosphere")
+packages <- c("knitr", "kableExtra", "magrittr", "readr", "geosphere", "dplyr")
 install_me <- packages[!(packages %in% installed.packages()[, "Package"])]
 if (length(install_me)) install.packages(install_me)
 library(knitr)
@@ -42,6 +42,7 @@ library(knitr)
 library(magrittr)
 library(readr)
 library(geosphere)
+library(dplyr)
 ```
 
 ## Background
@@ -252,8 +253,12 @@ cat(paste0(ordered_info[,1], " is ", ordered_info[,2], " miles away from ", orde
 ### Objective 4
 
 #### Objective 4.1
+<<<<<<< HEAD
 ```{r ob4.1, echo=T, include=TRUE}
 library("dplyr")
+=======
+```{r ob4.1}
+>>>>>>> 287e54f727ccc46296145770e6e8c442e4e0b8ba
 #Algorithm
 #Step1. Find the risk for each area
 #Step2. Find the burden for each area
@@ -312,9 +317,13 @@ maxs_risk
 ```
 
 #### Objective 4.2
+<<<<<<< HEAD
 ```{r ob4.2, echo=T, include=TRUE}
 install.packages("dplyr")
 library("dplyr")
+=======
+```{r ob4.2}
+>>>>>>> 287e54f727ccc46296145770e6e8c442e4e0b8ba
 
 #Generates total data frames
 generate_total_df <- function(places, sums, column_name)
