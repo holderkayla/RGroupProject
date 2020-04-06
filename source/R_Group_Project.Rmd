@@ -112,7 +112,8 @@ print(paste0("Ground zero for the virus seems to be ", ground_zero, "."))
 
 
 ```
-Objective 1, Answer: We believe this to be the origin because it has the maximum number of cases on day 0. The dataset begins with the recorded cases starting with date 1/22/20, which is after the first case globally was found. The day that the first case for any area was recorded is not included within the dataset. To find the most likely area to have the global first case it is believed that the area would have the most cases by 1/22/20. See code comments for how the number of cases was computed. 
+Objective 1 
+We believe this to be the origin because it has the maximum number of cases on day 0. The dataset begins with the recorded cases starting with date 1/22/20, which is after the first case globally was found. The day that the first case for any area was recorded is not included within the dataset. To find the most likely area to have the global first case it is believed that the area would have the most cases by 1/22/20. See code comments for how the number of cases was computed. 
 
 ### Objective 2
 ```{r ob2, echo=T, include=TRUE}
