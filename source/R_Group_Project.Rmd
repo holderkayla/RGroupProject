@@ -119,7 +119,7 @@ print(paste0("Ground zero for the virus seems to be ", ground_zero, "."))
 
 
 ```
-Objective 1, Answer: Now we believe this to be the origin because it has the maximum number of cases on day 0. See code comments for how the number of cases was computed. 
+Objective 1, Answer: We believe this to be the origin because it has the maximum number of cases on day 0. The dataset begins with the recorded cases starting with date 1/22/20, which is after the first case globally was found. The day that the first case for any area was recorded is not included within the dataset. To find the most likely area to have the global first case it is believed that the area would have the most cases by 1/22/20. See code comments for how the number of cases was computed. 
 
 ### Objective 2
 ```{r ob2}
@@ -141,41 +141,86 @@ print(new_cases)
 
 ### Objective 3
 ```{r ob3}
+
 confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
-recent_places <- data.frame(Providence = nrow(confirmed), Country = ncol(confirmed), Lat = nrow(confirmed), Long = ncol(confirmed)) #Dataframe to contain lat and long
+
+#Dataframe to contain lat and long
+recent_places <- data.frame(Providence = nrow(confirmed), Country = ncol(confirmed), Lat = nrow(confirmed), Long = ncol(confirmed)) 
+
 y <- 1
-for(x in 1:nrow(confirmed)){ #iterates through rows
-  i <- ncol(confirmed) #Start at the last column
-  new_cases <- confirmed[x,i] #Values for the number of cases
-  cases_before <- confirmed[x,(i-1)] #Values for the number of cases the day before
-  if (new_cases > 0 && cases_before == 0){ #The first date of instance
+
+#iterates through rows
+for(x in 1:nrow(confirmed)){ 
+  
+  #Start at the last column
+  i <- ncol(confirmed) 
+  
+  #Values for the number of cases
+  new_cases <- confirmed[x,i] 
+  
+  #Values for the number of cases the day before
+  cases_before <- confirmed[x,(i-1)]
+  
+  #The first date of instance
+  if (new_cases > 0 && cases_before == 0){ 
+    
     recent_places[y,1:4] <- confirmed[x,1:4]
+    
     y <- y + 1
+    
   } else {
-  i <- i - 1 #Move back one column to find previous day if no matches found
+    
+  #Move back one column to find previous day if no matches found
+  i <- i - 1 
+  
   }
 }
-recent_places <- recent_places[1:(y-1),] #Truncate dataframe to correct size
+
+#Change dataframe to correct size
+recent_places <- recent_places[1:(y-1),] 
+
 y <- 1
+
 first_place <- data.frame(Providence = 1, Country = 1, Lat = 1, Long = 1)
+
 cases_number <- 0
+
 for (x in 1:nrow(confirmed)) {
-  i <- 5 #Start at first column of case number data
-  cases <- confirmed[x,i] #Values for the number of cases
-  if (cases > cases_number) #Largest number of cases on earliest day reported
+ 
+  #Start at first column of case number data 
+  i <- 5 
+  
+  #Values for the number of cases
+  cases <- confirmed[x,i] 
+  
+  #Largest number of cases on earliest day reported
+  if (cases > cases_number) 
+    
     {
     first_place[1,1:4] <- confirmed[x,1:4] 
+    
     cases_number <- confirmed[x,i]
     }
   else 
+    
   {
-    i <- i + 1 #Move to next day if no cases found
+    #Move to next day if no cases found
+    i <- i + 1 
+    
   }
 }
-dist_meter <- geosphere::distm(recent_places[,4:3], first_place[1,4:3], fun = distGeo) #Distance in meters from origin
-dist_mile <- dist_meter/1609.344 #Distance in miles from origin
-full_info <- data.frame(recent_places[,2], dist_mile[], first_place[,1:2]) #Dataframe with print information
-ordered_info <- full_info[order(dist_mile),] #Order by distance from least to greatest
+#Distance in meters from origin
+dist_meter <- geosphere::distm(recent_places[,4:3], first_place[1,4:3], fun = distGeo) 
+
+#Distance in miles from origin
+dist_mile <- dist_meter/1609.344 
+
+#Dataframe with print information
+full_info <- data.frame(recent_places[,2], dist_mile[], first_place[,1:2]) 
+
+#Order by distance from least to greatest
+ordered_info <- full_info[order(dist_mile),] 
+
 cat(paste0(ordered_info[,1], " is ", ordered_info[,2], " miles away from ", ordered_info[,3], ", ", ordered_info[,4], sep="\n"))
 
 ```
