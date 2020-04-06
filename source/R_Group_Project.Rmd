@@ -191,13 +191,43 @@ confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", s
 recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
 deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
 
-colnames(confirmed)
-unique_regions <- select(recovered, Province.State, Country)
-non_regions <- select(confirmed, Province.State)
-intersect(unique_regions, non_regions)
+#colnames(confirmed)
+unique_regions <- select(recovered, Province.State, Country.Region)
+non_regions <- select(deaths, Province.State, Country.Region)
+same <- merge(non_regions,unique_regions)
 
-#filter(confirmed, province.State)
+non_exist <- setdiff(non_regions, unique_regions)
 
+modified_confirmed <- left_join(recovered, confirmed, by = c("Province.State", "Country.Region"))
+modified_deaths <- left_join(recovered, deaths, by = c("Province.State", "Country.Region"))
+
+risk <- modified_deaths[, ncol(modified_deaths)] / recovered[ , ncol(recovered)]
+
+burden <- modified_confirmed[, ncol(modified_confirmed)] * risk
+
+recovered_with_scores <- mutate(
+  recovered,
+  risk_score = risk,
+  burden_score = burden
+)
+data <- data.frame(column1 = c(-Inf, 4, NA, 7, 10), column2 = c(2, 8, 5, 4, 4))
+#column1b <- data$column1[which(!is.na(data$column1))]
+#column1c <- column1b[which(column1b < Inf)]
+#max(column1c)
+
+col2 <- which(recovered_with_scores$risk_score < Inf)
+recovered_with_scores[1]
+#stuff <- recovered_with_scores[[which(recovered_with_scores$risk_score < Inf)]]
+
+#max(stuff, na.rm = TRUE)
+recovered_with_scores
+#min(recovered_with_scores$risk_score, na.rm = TRUE )
+mins <- filter(recovered_with_scores, risk_score == min(recovered_with_scores$risk_score, na.rm = TRUE))
+ 
+maxs <- filter(recovered_with_scores, risk_score == max(recovered_with_scores$risk_score, na.rm = TRUE, inf.rm = TRUE))
+ mins
+ maxs
+ help(max)
 
 ```
 
