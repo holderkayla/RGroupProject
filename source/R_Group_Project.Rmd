@@ -233,43 +233,7 @@ maxs <- filter(recovered_with_scores, risk_score == max(recovered_with_scores$ri
 
 #### Objective 4.2
 ```{r ob4.2}
-install.packages("dplyr")
 library("dplyr")
-
-#Generates total data frames
-generate_total_df <- function(places, sums, column_name)
-{
-  countries <- vector()
-  
-  total_cases <- vector()
-  
-  for (i in 1:length(places)){
-    
-    if (is.element(places[i], countries)){
-      
-      new <- match(places[i], countries)
-      
-      total_cases[new] <- total_cases[new] + sums[i] 
-      
-    }
-    else{
-      
-      countries <- c(countries, places[i])
-      
-      total_cases <- c(total_cases, sums[i])
-      
-    }
-  }
-  
-  total_cases <- data.frame(countries, total_cases)
-  
-  colnames(total_cases) <- c("countries", column_name)
-  
-  total_cases
-  
-}
-
-#Read input from csv files
 
 confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
 
@@ -277,36 +241,108 @@ recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", s
 
 deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
 
+filtered_locations_confirmed <- unique(confirmed[, 2])
+filtered_locations_recovered <- unique(recovered[, 2])
+filtered_locations_deaths <- unique(deaths[, 2])
+
+get_totals <- function(data_set, place) {
+  new_df <- data_set %>%
+    filter(Country.Region == place) %>%
+    select(Country.Region, length(data_set))
+  
+  return(sum(new_df[, 2]))
+}
+
+confirmed_totals <- lapply(filtered_locations, get_totals, data_set = confirmed)
+confirmed_totals <- unlist(confirmed_totals)
+
+recovered_totals <- lapply(filtered_locations, get_totals, data_set = confirmed)
+recovered_totals <- unlist(confirmed_totals)
+
+death_totals <- lapply(filtered_locations, get_totals, data_set = confirmed)
+death_totals <- unlist(confirmed_totals)
+
+#Generates total data frames
+#generate_total_df <- function(places, sums, column_name)
+#{
+  #countries <- vector()
+  
+  #total_cases <- vector()
+  
+  #for (i in 1:length(places)){
+    
+    #if (is.element(places[i], countries)){
+      
+      #new <- match(places[i], countries)
+      
+      #total_cases[new] <- total_cases[new] + sums[i] 
+      
+    #}
+    #else{
+      
+      #countries <- c(countries, places[i])
+      
+      #total_cases <- c(total_cases, sums[i])
+      
+    #}
+  #}
+  # filtered_places <- unique(tot_places)
+  # func(dataset, place)
+    # new_df <- chosen_dataset %>%
+    #   filter(Country.Region == places) %>%
+    #   select(country, last_column)
+  # 
+  # return(sum(new_df[,2]))
+    #}
+  #}
+  
+  #total_cases <- data.frame(countries, total_cases)
+  
+  #colnames(total_cases) <- c("countries", column_name)
+  
+  #total_cases
+  
+#}
+
+
+#Read input from csv files
+
+#confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
+
+#recovered <- read.csv(file="../data/time_series_covid19_recovered_global.csv", stringsAsFactors = FALSE)
+
+#deaths <- read.csv(file="../data/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
+
 #calculate the sums of each
 
-sums_confirmed <- confirmed[, ncol(confirmed)]
+#sums_confirmed <- confirmed[, ncol(confirmed)]
 
-sums_recoveries <- recovered[, ncol(recovered)]
+#sums_recoveries <- recovered[, ncol(recovered)]
 
-sums_deaths <- deaths[, ncol(deaths)]
+#sums_deaths <- deaths[, ncol(deaths)]
 
 #Generate the totals
 
-total_confirmations <- generate_total_df(confirmed$Country.Region, sums_confirmed, "total_confirmations")
+#total_confirmations <- generate_total_df(confirmed$Country.Region, sums_confirmed, "total_confirmations")
 
-total_recoveries <- generate_total_df(recovered$Country.Region,  sums_recoveries, "total_recoveries")
+#total_recoveries <- generate_total_df(recovered$Country.Region,  sums_recoveries, "total_recoveries")
 
-total_deaths <- generate_total_df(deaths$Country.Region, sums_deaths, "total_deaths")
+#total_deaths <- generate_total_df(deaths$Country.Region, sums_deaths, "total_deaths")
 
 #Sort the data_frames
-total_confirmations_sorted <- arrange(total_confirmations, -total_confirmations)
+#total_confirmations_sorted <- arrange(total_confirmations, -total_confirmations)
 
-total_recoveries_sorted <-arrange(total_recoveries, -total_recoveries)
+#total_recoveries_sorted <-arrange(total_recoveries, -total_recoveries)
 
-total_deaths_sorted <- arrange(total_deaths, -total_deaths)
+#total_deaths_sorted <- arrange(total_deaths, -total_deaths)
 
 #Output the data_frames as a table
 
-kable(total_confirmations_sorted[1:5,])
+#kable(total_confirmations_sorted[1:5,])
 
-kable(total_recoveries_sorted[1:5,])
+#kable(total_recoveries_sorted[1:5,])
 
-kable(total_deaths_sorted[1:5,])
+#kable(total_deaths_sorted[1:5,])
 
 ```
 
