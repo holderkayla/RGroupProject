@@ -1,6 +1,6 @@
 ---
 title: "Project 1"
-author: "Name:  \n Partner: "
+author: "Name: Kayla Holder  \n Partners: Alec Smith, Brandon Nuttall "
 date: "`r Sys.Date()`"
 output: 
   pdf_document:
@@ -52,10 +52,10 @@ Country/region are countries/regions hat conform to World Health Organization (W
 Lat and Long refer to coordinates references for the user. 
 Date fields are stored in MM/DD/YYYY format.
 
-## Project Objectives
-######Make function definition file#############
-######Make data grab happen in one place#######
-### Objective 1
+## Project Objectives 
+### Make function definition file 
+### Make data grab happen in one place 
+### Objective 1 
 ```{r ob1, echo=T, include=TRUE}
 # Algorithm 
 # Step1. Read in csv files.
