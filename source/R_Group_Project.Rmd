@@ -124,19 +124,43 @@ Objective 1, Answer: We believe this to be the origin because it has the maximum
 ### Objective 2
 ```{r ob2}
 confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
-sums <- rowSums(confirmed[, 5:(ncol(confirmed)-1)])
-current_day <- confirmed[, ncol(confirmed)]
-new_cases <- vector()
 
-for ( i in 1:length(sums))
-{
-  if (sums[i] == 0 && current_day[i] > 0)
-    {
-        new_cases <- c(new_cases, confirmed[i, 2])
-    }
+#Dataframe to contain Providence and Country for the places with the most recent first cases
+recent_places <- data.frame(Providence = nrow(confirmed), Country = ncol(confirmed)) 
+
+y <- 1
+
+#iterates through rows
+for(x in 1:nrow(confirmed)){ 
+  
+  #Start at the last column
+  i <- ncol(confirmed) 
+  
+  #Values for the number of cases
+  new_cases <- confirmed[x,i] 
+  
+  #Values for the number of cases the day before
+  cases_before <- confirmed[x,(i-1)]
+  
+  #The first date of instance
+  if (new_cases > 0 && cases_before == 0){ 
+    
+    recent_places[y,1:2] <- confirmed[x,1:2]
+    
+    y <- y + 1
+    
+  } else {
+    
+  #Move back one column to find previous day if no matches found
+  i <- i - 1 
+  
+  }
 }
 
-print(new_cases)
+#Change dataframe to correct size
+recent_places <- recent_places[1:(y-1),] 
+
+print(recent_places)
 ```
 
 ### Objective 3
@@ -144,7 +168,7 @@ print(new_cases)
 
 confirmed <- read.csv(file="../data/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
 
-#Dataframe to contain lat and long
+#Dataframe to contain Providence, Country, Lat and Long for the places with the most recent first cases
 recent_places <- data.frame(Providence = nrow(confirmed), Country = ncol(confirmed), Lat = nrow(confirmed), Long = ncol(confirmed)) 
 
 y <- 1
